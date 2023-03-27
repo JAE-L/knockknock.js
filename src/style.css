@@ -1,0 +1,73 @@
+@import url('https://webfontworld.github.io/NanumSquareNeo/NanumSquareNeo.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.knockModalInput:focus, .knockModalInput:active{
+    outline: none;
+}
+.knockModalTextarea {
+    resize: none;
+}
+.knockModalTextarea::-webkit-scrollbar {
+    display: none;
+}
+.knockModalTextarea:focus, .knockModalTextarea:active {
+    outline: none;
+}
+
+.knockModalCursorPointer {
+    cursor: none;
+}
+@media(pointer: fine){
+    .knockModalCursorPointer {
+        cursor: pointer;
+    }
+}
+
+.knockModalWordWrap {
+    word-wrap: break-word;
+    word-break: keep-all;
+    white-space: pre-wrap;
+}
+
+.knocking {
+    animation: knocking 0.8s ease-in-out infinite;
+    -webkit-animation: knocking 0.8s ease-in-out infinite;
+    backface-visibility: visible;
+}
+@keyframes knocking {
+    from{
+        transform: translate3d(0, 0, 1000px) rotate3d(0, 0, 0, 0deg);
+    }
+    30%{
+        transform: translate3d(0, 1px, 1000px) rotate3d(0.4, 0.04, 0, 30deg);
+    }
+    50%{
+        transform: translate3d(0, 1px, 1000px) rotate3d(0.2, 0.02, 0, 15deg);
+    }
+    70%{
+        transform: translate3d(0, 1px, 1000px) rotate3d(0.4, 0.04, 0, 30deg);
+    }
+    to{
+        transform: translate3d(0, 0, 1000px) rotate3d(0, 0, 0, 0deg);
+    }
+}
+@-webkit-keyframes knocking{
+    from{
+        -webkit-transform: translate3d(0, 0, 1000px) rotate3d(0, 0, 0, 0deg);
+    }
+    30%{
+        -webkit-transform: translate3d(0, 1px, 1000px) rotate3d(0.4, 0.04, 0, 30deg);
+    }
+    50%{
+        -webkit-transform: translate3d(0, 1px, 1000px) rotate3d(0.2, 0.02, 0, 15deg);
+    }
+    70%{
+        -webkit-transform: translate3d(0, 1px, 1000px) rotate3d(0.4, 0.04, 0, 30deg);
+    }
+    to{
+        -webkit-transform: translate3d(0, 0, 1000px) rotate3d(0, 0, 0, 0deg);
+    }
+}
