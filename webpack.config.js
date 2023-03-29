@@ -21,8 +21,12 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js'],
   },
-  devtool: 'eval-source-map',
+  devtool: false, //'eval-source-map'
   output: {
+    library: 'KnockKnock',
+    libraryTarget: 'umd',
+    libraryExport : "default",
+    umdNamedDefine: true,
     filename: 'index.js',
     path: path.resolve(__dirname, 'dist'),
   },

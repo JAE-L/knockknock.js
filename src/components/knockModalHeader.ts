@@ -27,9 +27,9 @@ export default class KnockModalHeader {
     };
 
     generateKnockModalHeader(): HTMLElement[]{
-        const textBoxElement = generateNodeElement('div', ['inline-flex', 'flex-col', 'gap-1']);
-        const titleElement = generateNodeWithTextElement('h1', ['text-base', 'text-black', 'font-black', 'knockModalWordWrap'], `${this.headerTitle}`);
-        const subTitleElement = generateNodeWithTextElement('p', ['text-xs', 'text-grayDark', 'font-medium', 'knockModalWordWrap'], `${this.headerSubTitle}`);
+        const textBoxElement = generateNodeElement('div', ['km-inline-flex', 'km-flex-col', 'km-gap-1']);
+        const titleElement = generateNodeWithTextElement('h1', ['km-text-base', 'km-text-black', 'km-font-black', 'knockModalWordWrap'], `${this.headerTitle}`);
+        const subTitleElement = generateNodeWithTextElement('p', ['km-text-xs', 'km-text-grayDark', 'km-font-medium', 'knockModalWordWrap'], `${this.headerSubTitle}`);
         const iconButtonElement = generateIconButtonElement(`${this.headerIconName}`, this.headerIconClickEvent, this.headerIconClickEventArguments);
         appendElements(textBoxElement, [titleElement, subTitleElement]);
         return [textBoxElement, iconButtonElement];

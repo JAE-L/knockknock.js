@@ -1,4 +1,3 @@
-import './reset.css';
 import './style.css';
 import { knockInquiryServiceDataType, knockInquiryCategoryDataType } from './utils/types';
 import { generateNodeElement, generateNodeWithTextElement, appendElements } from './utils/nodeElement';
@@ -15,8 +14,7 @@ interface knockModalDataType {
 };
 
 
-//http://192.168.43.26:5500/public/
-export default class KnockModal {
+export default class KnockKnock {
     private bodyElement: HTMLElement;
     private knockModalFragment: HTMLElement;
     private knockModalElement: HTMLElement;
@@ -30,11 +28,11 @@ export default class KnockModal {
 
     constructor(props: knockModalDataType){
         this.bodyElement = document.body;
-        this.knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'w-[100%]', 'h-[100%]', 'bg-neutral-900/20', 'backdrop-blur', 'fixed', 'p-4', 'flex', 'justify-center', 'items-end', 'z-10']);
-        this.knockModalElement = generateNodeElement('div', ['w-[100%]', 'max-w-[360px]', 'h-auto', 'bg-white', 'rounded-2xl', 'p-4', 'flex', 'flex-col', 'items-center', 'gap-4']);
-        this.knockModalHeaderSection = generateNodeElement('div', ['w-[100%]', 'h-auto', 'flex', 'justify-between', 'content-start', 'gap-2.5']);
-        this.knockModalBodySection = generateNodeElement('div', ['w-[100%]', 'h-auto', 'flex', 'flex-col', 'gap-2']);
-        this.knockModalFooterSection = generateNodeWithTextElement('p', ['text-[10px]', 'text-slate-300', 'font-semibold', 'select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:text-slate-400', 'active:text-slate-400', 'transition-[color]'], 'powered by KnockKnock');
+        this.knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'km-w-full', 'km-h-full', 'km-bg-neutral-900/20', 'km-backdrop-blur', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-10']);
+        this.knockModalElement = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-h-auto', 'km-bg-white', 'km-rounded-2xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-gap-4']);
+        this.knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-content-start', 'km-gap-2.5']);
+        this.knockModalBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
+        this.knockModalFooterSection = generateNodeWithTextElement('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
         this.serviceTitle = props.serviceTitle;
         this.serviceSubTitle = props.serviceSubTitle;
         this.inquiryCategoryList = props.inquiryCategoryList;
@@ -46,7 +44,7 @@ export default class KnockModal {
             inquiryInputPlaceHolder: '',
             inquiryInputButtonText: '',
             inquiryNeedEmailAddress: true,
-            userEmailAddress: 'sdsdf@gmail.com'
+            userEmailAddress: ''
         };
     };
 
@@ -237,8 +235,7 @@ export default class KnockModal {
         });
         this.knockModalHeaderSectionHandler(newKnockModalHeader.generateKnockModalHeader());
 
-        const newKnockHandBox = generateNodeElement('div', ['w-[100%]', 'h-auto', 'flex', 'justify-center', 'items-center']);
-        const newKncokHand = generateNodeWithTextElement('div', ['w-auto', 'h-auto', 'text-6xl', 'text-center', 'drop-shadow-xl', 'select-none', 'knocking'], '✊');
+        const newKncokHand = generateNodeWithTextElement('div', ['km-w-auto', 'km-h-auto', 'km-text-6xl', 'km-text-center', 'km-drop-shadow-xl', 'km-select-none', 'knocking'], '✊');
         this.knockModalBodySectionHandler([newKncokHand]);
 
         setTimeout(() => {
@@ -284,8 +281,7 @@ export default class KnockModal {
 }
 
 
-//Copyright 2023. KnockKnock. All rights reserved.
-// const knockModalComponent = new KnockModal({
+// const knockModalComponent = new KnockKnock({
 //     serviceTitle: 'BeMoon',
 //     serviceSubTitle: '문의, 오타, 버그 신고 등 어떤 연락도 괜찮아요☺️.',
 //     inquiryCategoryList: [

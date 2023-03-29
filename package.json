@@ -1,13 +1,22 @@
 {
   "name": "knockknock.js",
-  "version": "1.0.0",
+  "version": "1.1.5",
   "description": "Copyright 2023. KnockKnock. All rights reserved.",
-  "main": "index.js",
+  "homepage": "https://github.com/JAE-L/knockknock.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack"
   },
-  "author": "JAE-L",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JAE-L/knockknock.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "jaegwon",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^10.4.14",
@@ -23,6 +32,6 @@
     "webpack-dev-server": "^4.13.1"
   },
   "keywords": [
-    "KnockKnock"
+    "KnockKnock", "inquiry", "inquiry service", "javascript", "library"
   ]
 }

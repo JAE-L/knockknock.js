@@ -33,14 +33,12 @@ export default class KnockInputWithButton {
     changeButtonClass(buttonElement: HTMLElement, buttonState: boolean){
         if(buttonState === true){
             buttonElement.removeAttribute('disabled');
-            buttonElement.classList.replace('bg-slate-50', 'bg-blue');
-            buttonElement.classList.replace('text-slate-300', 'text-white');
-            buttonElement.classList.add('[@media(pointer:fine){&:hover}]:bg-blueDark', 'active:bg-blueDark')
+            buttonElement.classList.remove('km-bg-slate-50', 'km-text-slate-300')
+            buttonElement.classList.add('km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark');
         } else{
             buttonElement.setAttribute('disabled', '');
-            buttonElement.classList.replace('bg-blue', 'bg-slate-50');
-            buttonElement.classList.replace('text-white', 'text-slate-300');
-            buttonElement.classList.remove('[@media(pointer:fine){&:hover}]:bg-blueDark', 'active:bg-blueDark');
+            buttonElement.classList.remove('km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark');
+            buttonElement.classList.add('km-bg-slate-50', 'km-text-slate-300')
         };
     };
 

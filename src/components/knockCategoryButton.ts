@@ -24,9 +24,9 @@ export default class KnockCategoryButton {
     };
 
     private generateKnockCategoryButton(categoryData: knockCategoryDataType): HTMLElement{
-        const categoryButtonElement = generateNodeElement('div', ['w-[100%]', 'h-[60px]', 'border', 'border-solid', 'border-slate-200', 'rounded-2xl', 'px-4', 'text-sm', 'inline-flex', 'items-center', 'gap-3', '[@media(pointer:fine){&:hover}]:border-slate-300', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:bg-slate-50', 'active:border-slate-300', 'active:bg-slate-50', 'transition-colors']);
-        const categorySymbolBox = generateNodeWithTextElement('div', ['w-8', 'min-w-[32px]', 'h-8', 'min-h-[32px]', 'rounded-lg', `bg-${categoryData.categorySymbolColorName}`, 'flex', 'justify-center', 'items-center', 'select-none'], `${categoryData.categorySymbolTextEmoji}`);
-        const categoryTitleElement = generateNodeWithTextElement('h2', ['max-w-[calc(100%-44px)]', 'text-sm', 'text-black', 'font-semibold', 'knockModalWordWrap', 'select-none'], `${categoryData.categoryTitle}`);
+        const categoryButtonElement = generateNodeElement('div', ['km-w-full', 'km-h-60px', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-inline-flex', 'km-items-center', 'km-gap-3', '[@media(pointer:fine){&:hover}]:km-border-slate-300', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-bg-slate-50', 'active:km-border-slate-300', 'active:km-bg-slate-50', 'km-transition-colors']);
+        const categorySymbolBox = generateNodeWithTextElement('div', ['km-w-8', 'km-min-w-32px', 'km-h-8', 'km-min-h-32px', 'km-rounded-lg', `km-bg-${categoryData.categorySymbolColorName}`, 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none'], `${categoryData.categorySymbolTextEmoji}`);
+        const categoryTitleElement = generateNodeWithTextElement('h2', ['km-max-w-full-44px', 'km-text-sm', 'km-text-black', 'km-font-semibold', 'knockModalWordWrap', 'km-select-none'], `${categoryData.categoryTitle}`);
         appendElements(categoryButtonElement, [categorySymbolBox, categoryTitleElement]);
         categoryButtonElement.addEventListener('click', () => {categoryData.categoryClickEvent(categoryData.categoryClickEventArguments)});
         return categoryButtonElement;

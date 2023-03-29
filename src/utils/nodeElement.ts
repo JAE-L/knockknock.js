@@ -49,20 +49,20 @@ export const generateSvgElement = function(svgClassList: string[]|null, svgStyle
 export const generateInputElement = function(inputType: string, inputValue: string, placeHolder: string){
     let inputElement: HTMLElement;
     let inputClassList: string[];
-    const inputDefaultClassList: string[] = ['w-[100%]', 'border', 'border-solid', 'border-slate-200', 'rounded-2xl', 'text-sm', 'text-black', 'font-medium', 'knockModalWordWrap', 'focus:border-slate-400'];
+    const inputDefaultClassList: string[] = ['km-w-full', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-text-sm', 'km-text-black', 'km-font-medium', 'knockModalWordWrap', 'focus:km-border-slate-400'];
     if(inputType === 'short'){
-        inputClassList = ['knockModalInput', 'h-[60px]', 'px-4'];
+        inputClassList = ['knockModalInput', 'km-h-60px', 'km-px-4'];
         inputElement = generateNodeElement('input', [...inputClassList, ...inputDefaultClassList]);
         inputElement.setAttribute('type', `text`);
         inputElement.setAttribute('value', `${inputValue}`);
     } else if(inputType === 'email'){
-        inputClassList = ['knockModalInput','h-[60px]', 'px-4'];
+        inputClassList = ['knockModalInput','km-h-60px', 'km-px-4'];
         inputElement = generateNodeElement('input', [...inputClassList, ...inputDefaultClassList]);
         inputElement.setAttribute('type', `email`);
         inputElement.setAttribute('autocomplete', 'off');
         inputElement.setAttribute('value', `${inputValue}`);
     } else{
-        inputClassList = ['knockModalTextarea', 'h-[140px]', 'p-4'];
+        inputClassList = ['knockModalTextarea', 'km-h-140px', 'km-p-4'];
         inputElement = generateNodeElement('textarea', [...inputClassList, ...inputDefaultClassList]);
         inputElement.textContent = inputValue;
     };
@@ -74,13 +74,13 @@ export const generateInputElement = function(inputType: string, inputValue: stri
 export const generateButtonElement = function(buttonData: knockButtonDataType){
     let buttonElement: HTMLElement;
     let buttonClassList: string[];
-    const buttonDefaultClassList: string[] = ['w-[100%]', 'h-12', 'rounded-2xl', 'px-4', 'text-sm', 'font-semibold', 'flex', 'justify-center', 'items-center', 'select-none', 'knockModalCursorPointer', 'transition-colors'];
+    const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-12', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockModalCursorPointer', 'km-transition-colors'];
     if(buttonData.buttonColor === 'blue'&& !buttonData.buttonClickAble){
-        buttonClassList = ['bg-slate-50', 'text-slate-300'];
+        buttonClassList = ['km-bg-slate-50', 'km-text-slate-300'];
     } else if(buttonData.buttonColor === 'blue' && buttonData.buttonClickAble){
-        buttonClassList = ['bg-blue', 'text-white', '[@media(pointer:fine){&:hover}]:bg-blueDark', 'active:bg-blueDark'];
+        buttonClassList = ['km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark'];
     } else{
-        buttonClassList = ['bg-white', 'border', 'border-solid', 'border-slate-200', 'text-slate-400', '[@media(pointer:fine){&:hover}]:border-slate-300', '[@media(pointer:fine){&:hover}]:bg-slate-50', 'active:border-slate-300', 'active:bg-slate-50'];
+        buttonClassList = ['km-bg-white', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-text-slate-400', '[@media(pointer:fine){&:hover}]:km-border-slate-300', '[@media(pointer:fine){&:hover}]:km-bg-slate-50', 'active:km-border-slate-300', 'active:km-bg-slate-50'];
     };
     buttonElement = generateNodeWithTextElement('button', [...buttonClassList, ...buttonDefaultClassList], `${buttonData.buttonText}`);
     if(buttonData.addClickEventDirectly === true){

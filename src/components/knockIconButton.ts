@@ -28,7 +28,7 @@ const getIconStyles = function(iconName: string): svgStylesType[]{
 
 const getIconClassList = function(iconName: string): string[]|null{
     if(iconName === 'spinIcon'){
-        return ['animate-spin'];
+        return ['km-animate-spin'];
     } else{
         return null;
     };
@@ -38,7 +38,7 @@ const generateIconButtonElement = function(iconName: string, iconClickEvent: any
     const svgStlyes = getIconStyles(iconName);
     const svgClassList = getIconClassList(iconName);
 
-    const iconButtonElement = generateNodeElement('div', ['w-9', 'min-w-[36px]', 'h-9', 'min-h-[36px]', 'bg-slate-50', 'rounded-full', 'flex', 'justify-center', 'items-center', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:bg-slate-100', 'active:bg-slate-100', 'transition-[background-color]']);
+    const iconButtonElement = generateNodeElement('div', ['km-w-9', 'km-min-w-36px', 'km-h-9', 'km-min-h-36px', 'km-bg-slate-50', 'km-rounded-full', 'km-flex', 'km-justify-center', 'km-items-center', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-bg-slate-100', 'active:km-bg-slate-100', 'km-transition-[background-color]']);
     const svgElement = generateSvgElement(svgClassList, svgStlyes);
     appendElements(iconButtonElement, [svgElement]);
     iconButtonElement.addEventListener('click', () => {iconClickEventArguments ? iconClickEvent(iconClickEventArguments): iconClickEvent()});
