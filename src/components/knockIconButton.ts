@@ -26,7 +26,7 @@ const getIconStyles = function(iconName: string): svgStylesType[]{
     };
 };
 
-const getIconClassList = function(iconName: string): string[]|null{
+const getIconClassList = function(iconName: string): null|string[]{
     if(iconName === 'spinIcon'){
         return ['km-animate-spin'];
     } else{
@@ -34,15 +34,16 @@ const getIconClassList = function(iconName: string): string[]|null{
     };
 };
 
-const generateIconButtonElement = function(iconName: string, iconClickEvent: any, iconClickEventArguments: any): HTMLElement{
+
+const generateKnockIconButtonElement = function(iconName: string, iconClickEvent: any, iconClickEventArguments: any): HTMLElement{
     const svgStlyes = getIconStyles(iconName);
     const svgClassList = getIconClassList(iconName);
 
-    const iconButtonElement = generateNodeElement('div', ['km-w-9', 'km-min-w-36px', 'km-h-9', 'km-min-h-36px', 'km-bg-slate-50', 'km-rounded-full', 'km-flex', 'km-justify-center', 'km-items-center', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-bg-slate-100', 'active:km-bg-slate-100', 'km-transition-[background-color]']);
-    const svgElement = generateSvgElement(svgClassList, svgStlyes);
+    const iconButtonElement: HTMLElement = generateNodeElement('div', ['km-w-9', 'km-min-w-36px', 'km-h-9', 'km-min-h-36px', 'km-bg-slate-50', 'km-rounded-full', 'km-flex', 'km-justify-center', 'km-items-center', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-bg-slate-100', 'active:km-bg-slate-100', 'km-transition-[background-color]']);
+    const svgElement: SVGElement = generateSvgElement(svgClassList, svgStlyes);
     appendElements(iconButtonElement, [svgElement]);
     iconButtonElement.addEventListener('click', () => {iconClickEventArguments ? iconClickEvent(iconClickEventArguments): iconClickEvent()});
     return iconButtonElement;
 };
 
-export default generateIconButtonElement
+export default generateKnockIconButtonElement

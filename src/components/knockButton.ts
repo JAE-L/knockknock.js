@@ -16,8 +16,8 @@ export default class KnockButton {
         this.buttonGroup = [];
     };
 
-    generateButtonGroup(){
-        this.buttonGroup = this.buttonList.map((buttonData) => {
+    generateButtonGroup(): HTMLElement[]{
+        this.buttonGroup = this.buttonList.map((buttonData: knockButtonDataType): HTMLElement => {
             return generateButtonElement(buttonData);
         });
         return this.buttonGroup;

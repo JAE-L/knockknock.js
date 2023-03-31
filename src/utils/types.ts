@@ -23,34 +23,6 @@ export interface knockInquiryCategoryDataType {
 };
 
 
-export interface knockInquiryInputDataType {
-    title: string;
-    subTitle: string;
-    inputType: string;
-    inputValue: string;
-    placeHolder: string;
-    buttonText: string;
-    buttonClickAble: boolean;
-};
-
-
-export interface knockEmailInputDataType {
-    title: string;
-    subTitle: string;
-    inputType: string;
-    inputValue: string;
-    placeHolder: string;
-    buttonText: string;
-    buttonClickAble: boolean;
-};
-
-
-export interface svgStylesType {
-    elementType: string;
-    [props: string]: string;
-};
-
-
 export interface knockButtonDataType {
     buttonText: string;
     buttonColor: string;
@@ -58,5 +30,11 @@ export interface knockButtonDataType {
     buttonClickEventArguments: any;
     buttonClickAble: boolean;
     addClickEventDirectly: boolean;
-    connectedInputData?: string | null;
+    connectedInputData?: null|undefined|string;
+};
+
+
+export interface svgStylesType {
+    elementType: string;
+    [props: string]: string;
 };

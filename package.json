@@ -1,6 +1,6 @@
 {
   "name": "knockknock.js",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Copyright 2023. KnockKnock. All rights reserved.",
   "homepage": "https://github.com/JAE-L/knockknock.js",
   "main": "dist/index.js",
@@ -13,8 +13,7 @@
     "url": "https://github.com/JAE-L/knockknock.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "author": "jaegwon",
   "license": "MIT",

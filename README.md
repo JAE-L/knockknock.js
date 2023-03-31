@@ -6,9 +6,10 @@ Warning : This library is currently in progress.
 
 Copyright 2023. KnockKnock. All rights reserved.
 
+
 ## Install
 
-To install KnockKnock in your website :
+To install `knockknock.js` in your website :
 
 ```bash
 npm i knockknock.js
@@ -16,10 +17,10 @@ npm i knockknock.js
 
 ```javascript
 import KnockKnock from 'knockknock.js';
-const KnockKnockInquiryComponent = new KnockKnock({
-    serviceTitle: 'Your Service Name',
-    serviceSubTitle: 'Your Service Explanation OR Contact Explanation',
-    inquiryCategoryList: [ // Set cateory of Inquiry
+const knockknockInquiryComponent = new KnockKnock({
+    serviceTitle: 'Service Name',
+    serviceSubTitle: 'Service Explanation OR Contact Explanation',
+    inquiryCategoryList: [
         {   
             title: "Inquiry Category Title",
             subTitle: "Inquiry Category Explanation",
@@ -34,31 +35,32 @@ const KnockKnockInquiryComponent = new KnockKnock({
     ]
 });
 
-KnockKnockInquiryComponent.onOpen(); // Open KnockKnockInquiryComponent
-KnockKnockInquiryComponent.onClose(); // Close KnockKnockInquiryComponent
+knockknockInquiryComponent.onOpen(); // Open knockknockInquiryComponent
+knockknockInquiryComponent.onClose(); // Close knockknockInquiryComponent
 ```
+
 
 ## SSR or SSG
 
-As knockknock.js need `window` object, you have to import knockknock.js dynamically in SSR or SSG projects. 
+As `knockknock.js` need `window` object, you have to import `knockknock.js` dynamically in SSR or SSG projects. 
 
 ```javascript
-// React
+// Example of React
 useEffect(() => {
     const loadKnockKnock = async() => {
         const { default: KnockKnock } = await import('KnockKnock.js');
-        const KnockKnockInquiryComponent = new KnockKnock(InquiryData);
-        KnockKnockInquiryComponent.onOpen();
+        const knockknockInquiryComponent = new KnockKnock(inquiryServiceData);
+        knockknockInquiryComponent.onOpen();
     };
     loadKnockKnock();
 }, []);
 
-// Svelte
+// Example of Svelte
 onMount(() => {
     const loadKnockKnock = async() => {
         const { default: KnockKnock } = await import('KnockKnock.js');
-        const KnockKnockInquiryComponent = new KnockKnock(InquiryData);
-        KnockKnockInquiryComponent.onOpen();
+        const knockknockInquiryComponent = new KnockKnock(inquiryServiceData);
+        knockknockInquiryComponent.onOpen();
     };
     loadKnockKnock();
 });
