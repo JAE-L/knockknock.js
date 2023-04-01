@@ -18,6 +18,7 @@ npm i knockknock.js
 ```javascript
 import KnockKnock from 'knockknock.js';
 const knockknockInquiryComponent = new KnockKnock({
+    serviceLanguage: 'ENG', // KR or ENG [pick 1]
     serviceTitle: 'Service Name',
     serviceSubTitle: 'Service Explanation OR Contact Explanation',
     inquiryCategoryList: [
