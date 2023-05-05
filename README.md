@@ -61,14 +61,16 @@ return(
 ```
 ```javascript
 // Example of Svelte
-let knockknockInquiryComponent = null;
-onMount(() => {
-    const loadKnockKnock = async() => {
-        const { default: KnockKnock } = await import('KnockKnock.js');
-        knockknockInquiryComponent = new KnockKnock(inquiryServiceData);
-    };
-    loadKnockKnock();
-});
+<script>
+    let knockknockInquiryComponent = null;
+    onMount(() => {
+        const loadKnockKnock = async() => {
+            const { default: KnockKnock } = await import('KnockKnock.js');
+            knockknockInquiryComponent = new KnockKnock(inquiryServiceData);
+        };
+        loadKnockKnock();
+    });
+</script>
 
-<button on:click={() => knockknockInquiryComponent.onOpen()}></button>
+<button on:click={() => knockknockInquiryComponent?.onOpen()}></button>
 ```
