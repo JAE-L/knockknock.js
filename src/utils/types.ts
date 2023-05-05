@@ -19,7 +19,18 @@ export interface knockInquiryCategoryDataType {
     inputDefaultValue: string;
     placeHolder: string;
     buttonText: string;
-    needEmailAddress: boolean;
+    needToRespondInquiry: boolean;
+};
+
+
+export interface knockInputDataType {
+    inputData: string;
+    inputType: string;
+    inputValue: string;
+    placeHolder: string;
+    inputChangeEvent: any;
+    inputKeyEvent: any;
+    inputValidationRegExp: string;
 };
 
 
@@ -27,10 +38,8 @@ export interface knockButtonDataType {
     buttonText: string;
     buttonColor: string;
     buttonClickEvent: any;
-    buttonClickEventArguments: any;
     buttonClickAble: boolean;
-    addClickEventDirectly: boolean;
-    connectedInputData?: null|undefined|string;
+    connectedInputData: null|undefined|string;
 };
 
 

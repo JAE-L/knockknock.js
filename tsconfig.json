@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "target": "es5",                                
+    "target": "es2017",                                
     "module": "es6",
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "typeRoots": ["./src/utils"],
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,               

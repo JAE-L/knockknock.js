@@ -49,7 +49,7 @@ export const generateSvgElement = function(svgClassList: null|string[], svgStyle
 export const generateInputElement = function(inputType: string, inputValue: string, placeHolder: string): HTMLElement{
     let inputElement: HTMLElement;
     let inputClassList: string[];
-    const inputDefaultClassList: string[] = ['km-w-full', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-text-sm', 'km-text-black', 'km-font-medium', 'knockModalWordWrap', 'focus:km-border-slate-400'];
+    const inputDefaultClassList: string[] = ['km-w-full', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-text-sm', 'km-text-black', 'km-font-medium', 'knockModalWordWrap', 'focus:km-border-slate-400', 'km-transition-[border-color]'];
 
     if(inputType === 'short'){
         inputClassList = ['knockModalInput', 'km-h-60px', 'km-px-4'];
@@ -78,21 +78,23 @@ export const generateButtonElement = function(buttonData: knockButtonDataType): 
     let buttonClassList: string[];
     const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-12', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockModalCursorPointer', 'km-transition-colors'];
 
-    if(buttonData.buttonColor === 'blue'&& !buttonData.buttonClickAble){
-        buttonClassList = ['km-bg-slate-50', 'km-text-slate-300'];
+    if(buttonData.buttonColor === 'blue' && !buttonData.buttonClickAble){
+        buttonClassList = ['km-dc-blue', 'km-bg-slate-50', 'km-text-slate-300'];
     } else if(buttonData.buttonColor === 'blue' && buttonData.buttonClickAble){
-        buttonClassList = ['km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark'];
-    } else{
-        buttonClassList = ['km-bg-white', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-text-slate-400', '[@media(pointer:fine){&:hover}]:km-border-slate-300', '[@media(pointer:fine){&:hover}]:km-bg-slate-50', 'active:km-border-slate-300', 'active:km-bg-slate-50'];
+        buttonClassList = ['km-dc-blue', 'km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark'];
+    } else if(buttonData.buttonColor === 'red' && !buttonData.buttonClickAble){
+        buttonClassList = ['km-dc-red', 'km-bg-slate-50', 'km-text-slate-300'];
+    } else if(buttonData.buttonColor === 'red' && buttonData.buttonClickAble){
+        buttonClassList = ['km-dc-red', 'km-bg-red', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-redDark', 'active:km-bg-redDark'];
+    }else{
+        buttonClassList = ['km-dc-white', 'km-bg-white', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-text-slate-400', '[@media(pointer:fine){&:hover}]:km-border-slate-300', '[@media(pointer:fine){&:hover}]:km-bg-slate-50', 'active:km-border-slate-300', 'active:km-bg-slate-50'];
     };
 
     buttonElement = generateNodeWithTextElement('button', [...buttonClassList, ...buttonDefaultClassList], `${buttonData.buttonText}`);
-    
-    if(buttonData.addClickEventDirectly === true){
-        buttonElement.addEventListener('click', () => {
-            buttonData.buttonClickEvent(buttonData.buttonClickEventArguments);
-        });
-    };
+
+    buttonElement.addEventListener('click', () => {
+        buttonData.buttonClickEvent();
+    });
 
     if(buttonData.buttonClickAble === false){
         buttonElement.setAttribute('disabled', '');

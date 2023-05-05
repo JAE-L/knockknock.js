@@ -5,8 +5,7 @@ interface knockCategoryDataType {
     categoryTitle: string;
     categorySymbolTextEmoji: string;
     categorySymbolColorName: string;
-    categoryClickEvent: any;
-    categoryClickEventArguments: any;
+    categoryClickEvent: Function;
 };
 
 interface knockCategoryButtonType {
@@ -28,7 +27,7 @@ export default class KnockCategoryButton {
         const categorySymbolBox: HTMLElement = generateNodeWithTextElement('div', ['km-w-8', 'km-min-w-32px', 'km-h-8', 'km-min-h-32px', 'km-rounded-lg', `km-bg-${categoryData.categorySymbolColorName}`, 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none'], `${categoryData.categorySymbolTextEmoji}`);
         const categoryTitleElement: HTMLElement = generateNodeWithTextElement('h2', ['km-max-w-full-44px', 'km-text-sm', 'km-text-black', 'km-font-semibold', 'knockModalWordWrap', 'km-select-none'], `${categoryData.categoryTitle}`);
         appendElements(categoryButtonElement, [categorySymbolBox, categoryTitleElement]);
-        categoryButtonElement.addEventListener('click', () => {categoryData.categoryClickEvent(categoryData.categoryClickEventArguments)});
+        categoryButtonElement.addEventListener('click', () => {categoryData.categoryClickEvent()});
         return categoryButtonElement;
     };
 

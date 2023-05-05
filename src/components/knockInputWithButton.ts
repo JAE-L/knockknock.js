@@ -1,17 +1,7 @@
-import { knockButtonDataType } from '../utils/types';
+import { knockInputDataType, knockButtonDataType } from '../utils/types';
 import { generateInputElement } from '../utils/nodeElement';
 import KnockButton from './knockButton';
 
-
-interface knockInputDataType {
-    inputData: string;
-    inputType: string;
-    inputValue: string;
-    placeHolder: string;
-    inputKeyEvent: any;
-    inputKeyEventArguments: any;
-    inputValidationRegExp: string;
-};
 
 interface knockInputWithButtonType extends knockInputDataType {
     buttonList: knockButtonDataType[];
@@ -23,8 +13,8 @@ export default class KnockInputWithButton {
     private inputType: string;
     private inputValue: string;
     private placeHolder: string;
+    private inputChangeEvent: any;
     private inputKeyEvent: any;
-    private inputKeyEventArguments: any;
     private inputValidationRegExp: RegExp;
     private inputValidationState: boolean;
     private buttonList: knockButtonDataType[];
@@ -34,8 +24,8 @@ export default class KnockInputWithButton {
         this.inputType = props.inputType;
         this.inputValue = props.inputValue;
         this.placeHolder = props.placeHolder;
+        this.inputChangeEvent = props.inputChangeEvent;
         this.inputKeyEvent = props.inputKeyEvent;
-        this.inputKeyEventArguments = props.inputKeyEventArguments;
         this.inputValidationRegExp = new RegExp(props.inputValidationRegExp);
         this.inputValidationState = false;
         this.buttonList = props.buttonList;
@@ -51,13 +41,30 @@ export default class KnockInputWithButton {
     };
 
     private changeButtonClass(buttonElement: HTMLElement, buttonState: boolean): void{
-        if(buttonState === true){
+        let buttonColor: null|string = null;
+        if(buttonElement.classList.contains('km-dc-blue')){
+            buttonColor = 'blue';
+        } else if(buttonElement.classList.contains('km-dc-red')){
+            buttonColor = 'red';
+        } else{
+            buttonColor = 'white';
+        };
+
+        if(buttonColor === 'blue' && buttonState === true){
             buttonElement.removeAttribute('disabled');
             buttonElement.classList.remove('km-bg-slate-50', 'km-text-slate-300');
             buttonElement.classList.add('km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark');
-        } else{
+        } else if(buttonColor === 'blue' && buttonState === false){
             buttonElement.setAttribute('disabled', '');
             buttonElement.classList.remove('km-bg-blue', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-blueDark', 'active:km-bg-blueDark');
+            buttonElement.classList.add('km-bg-slate-50', 'km-text-slate-300');
+        } else if(buttonColor === 'red' && buttonState === true){
+            buttonElement.removeAttribute('disabled');
+            buttonElement.classList.remove('km-bg-slate-50', 'km-text-slate-300');
+            buttonElement.classList.add('km-bg-red', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-redDark', 'active:km-bg-redDark');
+        } else if(buttonColor === 'red' && buttonState === false){
+            buttonElement.setAttribute('disabled', '');
+            buttonElement.classList.remove('km-bg-red', 'km-text-white', '[@media(pointer:fine){&:hover}]:km-bg-redDark', 'active:km-bg-redDark');
             buttonElement.classList.add('km-bg-slate-50', 'km-text-slate-300');
         };
     };
@@ -65,9 +72,9 @@ export default class KnockInputWithButton {
     private checkButtonClickAble(buttonGroup: HTMLElement[]): void{
         buttonGroup.forEach((buttonElement: HTMLElement, index: number): void => {
             const connectedInputData: null|undefined|string = this.buttonList[index]?.connectedInputData;
-            if(connectedInputData && this.inputValidationState){
+            if(connectedInputData === this.inputData && this.inputValidationState){
                 this.changeButtonClass(buttonElement, true);
-            } else if(connectedInputData && !this.inputValidationState){
+            } else if(connectedInputData === this.inputData && !this.inputValidationState){
                 this.changeButtonClass(buttonElement, false);
             };
         });
@@ -76,43 +83,27 @@ export default class KnockInputWithButton {
     private generateButtonGroup(): HTMLElement[]{
         const newKnockButton = new KnockButton({buttonList: this.buttonList});
         const newKnockButtonGroup: HTMLElement[] = newKnockButton.generateButtonGroup();
-        return newKnockButtonGroup
+        return newKnockButtonGroup;
     };
 
 
     generateInputWithButton(): HTMLElement[]{
         const inputElement: HTMLElement = generateInputElement(this.inputType, this.inputValue, this.placeHolder);
-
         const buttonGroup: HTMLElement[] = this.generateButtonGroup();
-        buttonGroup.forEach((buttonElement: HTMLElement, index: number): void => {
-            const connectedInputData: null|undefined|string = this.buttonList[index]?.connectedInputData;
-            const buttonClickEventArguments: any = this.buttonList[index].buttonClickEventArguments;
-            const addClickEventDirectly: boolean = this.buttonList[index].addClickEventDirectly;
-
-            if(connectedInputData && !addClickEventDirectly){
-                buttonElement.addEventListener('click', () => {
-                    buttonClickEventArguments[`${connectedInputData}`] = this.inputValue;
-                    this.buttonList[index].buttonClickEvent(buttonClickEventArguments);
-                });
-            } else if(!addClickEventDirectly){
-                buttonElement.addEventListener('click', () => {
-                    this.buttonList[index].buttonClickEvent(buttonClickEventArguments);
-                });
-            };
-        });
 
         this.checkInputValidation();
         this.checkButtonClickAble(buttonGroup);
 
-        inputElement.addEventListener('input', (e: Event) => {
-            this.inputValue = (e.target as HTMLInputElement).value;
+        inputElement.addEventListener('input', (ev: Event) => {
+            const newInputValue = (ev.target as HTMLInputElement).value;
+            this.inputValue = newInputValue;
+            this.inputChangeEvent(newInputValue);
             this.checkInputValidation();
             this.checkButtonClickAble(buttonGroup);
         });
-        inputElement.addEventListener('keydown', (e: KeyboardEvent) => {
-            if((e.key === 'Enter' && this.inputType !== 'long') && this.inputValidationState){
-                this.inputKeyEventArguments[this.inputData] = this.inputValue;
-                this.inputKeyEvent(this.inputKeyEventArguments);
+        inputElement.addEventListener('keydown', (ev: KeyboardEvent) => {
+            if((ev.key === 'Enter' && this.inputType !== 'long') && this.inputValidationState){
+                this.inputKeyEvent();
             };
         });
 
