@@ -45,7 +45,7 @@ knockknockInquiryComponent.onClose(); // Close knockknockInquiryComponent
 As `knockknock.js` needs `window` object, you have to import `knockknock.js` dynamically in SSR or SSG projects. 
 
 ```javascript
-// Example of React
+// Example of Next.js
 const [knockknockInquiryComponent, setKnockknockInquiryComponent] = useState(null);
 useEffect(() => {
     const loadKnockKnock = async() => {
@@ -60,7 +60,7 @@ return(
 );
 ```
 ```javascript
-// Example of Svelte
+// Example of SvelteKit
 <script>
     let knockknockInquiryComponent = null;
     onMount(() => {

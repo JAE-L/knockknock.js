@@ -1,8 +1,8 @@
 {
   "name": "knockknock.js",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Copyright 2023. KnockKnock. All rights reserved.",
-  "homepage": "https://github.com/JAE-L/knockknock.js",
+  "homepage": "https://knockknock.support",
   "main": "dist/index.js",
   "scripts": {
     "dev": "webpack serve",
