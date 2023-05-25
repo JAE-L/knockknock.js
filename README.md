@@ -1,4 +1,4 @@
-# KnockKnock (BETA)
+# KnockKnock
 
 KnockKnock is the Inquiry Service that clients easily inquire about their own concerns. You can import this library regardless of frontend frameworks or libraries.
 
@@ -49,7 +49,7 @@ As `knockknock.js` needs `window` object, you have to import `knockknock.js` dyn
 const [knockknockInquiryComponent, setKnockknockInquiryComponent] = useState(null);
 useEffect(() => {
     const loadKnockKnock = async() => {
-        const { default: KnockKnock } = await import('KnockKnock.js');
+        const { default: KnockKnock } = await import('knockknock.js');
         setKnockknockInquiryComponent(new KnockKnock(inquiryServiceData));
     };
     loadKnockKnock();
@@ -65,7 +65,7 @@ return(
     let knockknockInquiryComponent = null;
     onMount(() => {
         const loadKnockKnock = async() => {
-            const { default: KnockKnock } = await import('KnockKnock.js');
+            const { default: KnockKnock } = await import('knockknock.js');
             knockknockInquiryComponent = new KnockKnock(inquiryServiceData);
         };
         loadKnockKnock();
