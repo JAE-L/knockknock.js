@@ -74,3 +74,8 @@ return(
 
 <button on:click={() => knockknockInquiryComponent?.onOpen()}></button>
 ```
+
+
+## License
+
+microsoft/fluentui-emoji is licensed under the MIT License. Copyright © Microsoft Corporation.
