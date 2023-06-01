@@ -26,7 +26,7 @@ const knockknockInquiryComponent = new KnockKnock({
         {   
             title: "Inquiry Category Title",
             subTitle: "Inquiry Category Explanation",
-            textEmoji: "Inquiry Category Text Symbol",
+            textEmoji: "Inquiry Category Text Symbol", // EX) 😁, 📮, 🛠, 📜
             colorName: "blueLight", // blueLight OR orangeLight OR redLight OR greenLight [pick 1]
             inputType: 'short', // short(input) OR long(textarea) [pick 1]
             inputDefaultValue: 'Input Default Value',
