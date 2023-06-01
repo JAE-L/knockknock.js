@@ -1,6 +1,8 @@
 # KnockKnock
 
-KnockKnock is the Inquiry Service that clients easily inquire about their own concerns. You can import this library regardless of frontend frameworks or libraries.
+![KnockKnock Product Image](https://knockknock.support/knockknockProd.png)
+
+KnockKnock is the Inquiry Service that clients can easily contact about their own concerns. You can import this library regardless of frontend frameworks or libraries.
 
 Copyright 2023. KnockKnock. All rights reserved.
 
