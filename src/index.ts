@@ -26,6 +26,7 @@ export default class KnockKnock {
     #knockModalHeaderSection: HTMLElement;
     #knockModalBodySection: HTMLElement;
     #knockModalFooterSection: HTMLElement;
+    #knockModalElementCurrentHeight: number;
     #knockknockAPIKey: string;
     #serviceLanguage: string;
     #serviceTitle: string;
@@ -35,11 +36,12 @@ export default class KnockKnock {
 
     constructor(props: knockModalDataType){
         this.#bodyElement = document.body;
-        this.#knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-50', 'km-animate-blurOpacity']);
-        this.#knockModalElement = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-h-auto', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-gap-4', 'km-animate-fadeInTop']);
-        this.#knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-content-start', 'km-gap-2.5']);
+        this.#knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-9999', 'km-animate-blurOpacity']);
+        this.#knockModalElement = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-animate-fadeInTop', 'km-overflow-hidden']);
+        this.#knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2.5']);
         this.#knockModalBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
-        this.#knockModalFooterSection = generateNodeWithTextElement('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
+        this.#knockModalFooterSection = generateNodeWithTextElement('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-text-center', 'km-select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
+        this.#knockModalElementCurrentHeight = 0;
         this.#knockknockAPIKey = `${props.knockknockAPIKey ?? 'undefined'}`;
         this.#serviceLanguage = props.serviceLanguage === 'KR' ? 'KR' : 'ENG';
         this.#serviceTitle = `${props.serviceTitle ?? 'undefined'}`;
@@ -59,7 +61,7 @@ export default class KnockKnock {
 
     #checkKnockModalDataValidation(): boolean{
         if(this.#knockknockAPIKey.trim() === '' || this.#knockknockAPIKey.trim() === 'null' || this.#knockknockAPIKey.trim() === 'undefined'){
-            console.error('[ERROR in KnockKnock] - Please enter your API Key.');
+            console.error('[ERROR in knockknock.js] - Please enter your API Key.');
             return false;
         } else{
             return true;
@@ -84,6 +86,22 @@ export default class KnockKnock {
         } else{
             appendElements(parentNode, childNodes);
         };
+    };
+    #controlHeightTransition(){
+        const space = Array.from(this.#knockModalElement.children).map(el => el.clientHeight).reduce((a, b) => a + b, 64);
+        if(this.#knockModalElementCurrentHeight < space){
+            this.#knockModalHeaderSection.classList.add('km-animate-fadeInTop');
+            setTimeout(() => {
+                this.#knockModalHeaderSection.classList.remove('km-animate-fadeInTop')
+            }, 280);
+        } else if(this.#knockModalElementCurrentHeight > space){
+            this.#knockModalHeaderSection.classList.add('km-animate-fadeInDown');
+            setTimeout(() => {
+                this.#knockModalHeaderSection.classList.remove('km-animate-fadeInDown')
+            }, 280);
+        };
+        this.#knockModalElementCurrentHeight = space;
+        this.#knockModalElement.style.height = space + "px";
     };
 
 
@@ -153,6 +171,8 @@ export default class KnockKnock {
         });
         const newKnockCategoryButtonGroup: HTMLElement[] = newKnockCategoryButton.generateKnockCategoryButtonGroup();
         this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockCategoryButtonGroup);
+
+        this.#controlHeightTransition();
     };
     #renderInquiryInputPage(){
         const newKnockHeader = new KnockHeader({
@@ -195,6 +215,8 @@ export default class KnockKnock {
         });
         const newKnockInputWithButtonElement: HTMLElement[] = newKnockInputWithButton.generateInputWithButton();
         this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockInputWithButtonElement);
+
+        this.#controlHeightTransition();
     };
     #renderEmailInputPage(){
         const emailInputPageLangBundle = langBundle[this.#serviceLanguage]['emailInputPage'];
@@ -262,6 +284,8 @@ export default class KnockKnock {
         });
         const newKnockInputWithButtonElement: HTMLElement[] = newKnockInputWithButton.generateInputWithButton();
         this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockInputWithButtonElement);
+
+        this.#controlHeightTransition();
     };
     #renderEmailPreviewPage(){
         const emailPreviewPageLangBundle = langBundle[this.#serviceLanguage]['emailPreviewPage'];
@@ -301,6 +325,8 @@ export default class KnockKnock {
         const newKnockCategoryButtonGroup: HTMLElement[] = newKnockCategoryButton.generateKnockCategoryButtonGroup();
         const newKnockButtonGroup: HTMLElement[] = newKnockButton.generateButtonGroup();
         this.#knockModalNodeHandler(this.#knockModalBodySection, [...newKnockCategoryButtonGroup, ...newKnockButtonGroup]);
+
+        this.#controlHeightTransition();
     };
     #renderRequestNewInquiryPage(){
         const sendInquiryPageLangBundle = langBundle[this.#serviceLanguage]['requestNewInquiryPage'];
@@ -315,11 +341,13 @@ export default class KnockKnock {
         this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
 
 
-        const newKnockHand: HTMLElement = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-center', 'km-items-center']);
-        const newKnockHandPngElement: HTMLElement = generateNodeElement('img', ['km-w-16', 'km-h-16', 'km-drop-shadow-xl', 'km-select-none', 'km-animate-knocking', 'knockModalBackFaceVisible']);
+        const newKnockHand: HTMLElement = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none']);
+        const newKnockHandPngElement: HTMLElement = generateNodeElement('img', ['km-w-16', 'km-h-16', 'km-drop-shadow-xl', 'km-animate-knocking', 'knockModalBackFaceVisible']);
         newKnockHandPngElement.setAttribute('src', fistPng);
         appendElements(newKnockHand, [newKnockHandPngElement]);
         this.#knockModalNodeHandler(this.#knockModalBodySection, [newKnockHand]);
+
+        this.#controlHeightTransition();
         this.#requestNewInquiry();
     };
     #renderRequestSuccessPage(){
@@ -349,6 +377,8 @@ export default class KnockKnock {
         });
         const newKnockButtonGroup = newKnockButton.generateButtonGroup();
         this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockButtonGroup);
+
+        this.#controlHeightTransition();
     };
     #renderRequestErrorPage(errorStatus: number){
         const endInquiryPageLangBundle = langBundle[this.#serviceLanguage]['requestErrorInquiryPage'];
@@ -377,6 +407,8 @@ export default class KnockKnock {
         });
         const newKnockButtonGroup = newKnockButton.generateButtonGroup();
         this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockButtonGroup);
+
+        this.#controlHeightTransition();
     };
 
 
@@ -391,6 +423,8 @@ export default class KnockKnock {
         appendElements(this.#knockModalElement, [this.#knockModalHeaderSection, this.#knockModalBodySection, this.#knockModalFooterSection]);
         appendElements(this.#knockModalFragment, [this.#knockModalElement]);
         this.#bodyElement.insertBefore(this.#knockModalFragment, this.#bodyElement.firstChild);
+        
+        this.#controlHeightTransition();
     };
     onClose(){
         this.#knockModalFragment?.remove();

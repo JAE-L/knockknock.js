@@ -39,7 +39,7 @@ const generateKnockIconButtonElement = function(iconName: string, iconClickEvent
     const svgStlyes = getIconStyles(iconName);
     const svgClassList = getIconClassList(iconName);
 
-    const iconButtonElement: HTMLElement = generateNodeElement('div', ['km-w-9', 'km-min-w-36px', 'km-h-9', 'km-min-h-36px', 'km-bg-slate-50', 'km-rounded-full', 'km-flex', 'km-justify-center', 'km-items-center', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-bg-slate-100', 'active:km-bg-slate-100', 'km-transition-[background-color]']);
+    const iconButtonElement: HTMLElement = generateNodeElement('div', ['km-w-9', 'km-h-9', 'km-bg-slate-50', 'km-rounded-full', 'km-flex', 'km-justify-center', 'km-items-center', 'km-flex-none', 'knockModalCursorPointer', 'km-select-none', '[@media(pointer:fine){&:hover}]:km-bg-slate-100', 'active:km-bg-slate-100', 'km-transition-[background-color]']);
     const svgElement: SVGElement = generateSvgElement(svgClassList, svgStlyes);
     appendElements(iconButtonElement, [svgElement]);
     iconButtonElement.addEventListener('click', () => {iconClickEvent()});

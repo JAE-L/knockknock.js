@@ -4,25 +4,18 @@ module.exports = {
   important: true,
   content: ["./dist/*.{js,ts}"],
   theme: {
+    fontFamily: {
+      'nanumFont': ["NanumSquareNeo"]
+    },
     extend: {
       maxWidth: {
         "360px": "360px",//22.5rem
-        "full-44px": "calc(100% - 44px)"//2.75rem
-      },
-      minWidth: {
-        "32px": "32px",//2rem
-        "36px": "36px"//2.25rem
       },
       height: {
-        "60px": "60px",//3.75rem
-        "140px": "140px"//8.75rem
+        "120px": "120px",//7.5rem
       },
       minHeight: {
-        "32px": "32px",
-        "36px": "36px",
-      },
-      fontFamily: {
-        sans: ["NanumSquareNeo"]
+        "56px": "56px",
       },
       fontSize: {
         "2xs": ["10px", "160%"],//0.625rem
@@ -57,8 +50,18 @@ module.exports = {
       keyframes: {
         "fadeInTop": {
           "0%": {
-            opacity: "0",
-            transform: "translateY(10px)"
+            opacity: "0.6",
+            transform: "translateY(8px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        },
+        "fadeInDown": {
+          "0%": {
+            opacity: "0.6",
+            transform: "translateY(-8px)"
           },
           "100%": {
             opacity: "1",
@@ -94,9 +97,13 @@ module.exports = {
         }
       },
       animation: {
-        "fadeInTop": "fadeInTop 0.4s ease-out forwards",
+        "fadeInTop": "fadeInTop 0.3s ease-out forwards",
+        "fadeInDown": "fadeInDown 0.3s ease-out forwards",
         "blurOpacity": "blurOpacity 0.4s ease-out forwards",
         "knocking": "knocking 0.8s ease-in-out infinite"
+      },
+      zIndex: {
+        '9999': '9999',
       }
     },
     spacing: {
@@ -113,6 +120,7 @@ module.exports = {
       "10": "40px",
       "11": "44px",
       "12": "48px",
+      "14": "56px",
       "16": "64px"
     },
     borderRadius: {

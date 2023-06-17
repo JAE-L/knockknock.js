@@ -55,7 +55,7 @@ export default {
             firstButtonText: 'Okay'
         },
         'requestErrorInquiryPage': {
-            title: '❗️Fail to upload',
+            title: '❗️Failed to upload',
             '-2': 'Error occured on our server.',
             '-3': 'Unvalid API Key. Please contact service manager.',
             '-4': 'Error occured. Please try again.',
