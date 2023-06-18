@@ -38,7 +38,7 @@ export default class KnockKnock {
         this.#bodyElement = document.body;
         this.#knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-9999', 'km-animate-blurOpacity']);
         this.#knockModalElement = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-animate-fadeInTop', 'km-overflow-hidden']);
-        this.#knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2.5']);
+        this.#knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2']);
         this.#knockModalBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
         this.#knockModalFooterSection = generateNodeWithTextElement('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-text-center', 'km-select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
         this.#knockModalElementCurrentHeight = 0;
