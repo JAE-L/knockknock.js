@@ -28,8 +28,8 @@ export interface knockInputDataType {
     inputType: string;
     inputValue: string;
     placeHolder: string;
-    inputChangeEvent: any;
-    inputKeyEvent: any;
+    inputChangeEvent: Function;
+    inputKeyEvent: Function;
     inputValidationRegExp: string;
 };
 
@@ -37,11 +37,17 @@ export interface knockInputDataType {
 export interface knockButtonDataType {
     buttonText: string;
     buttonColor: string;
-    buttonClickEvent: any;
+    buttonClickEvent: Function;
     buttonClickAble: boolean;
-    connectedInputData: null|undefined|string;
+    connectedData: null|undefined|string;
 };
 
+
+export interface knockFaceButtonDataType{
+    faceCode: string;
+    buttonText: string;
+    buttonClickEvent: Function;
+};
 
 export interface svgStylesType {
     elementType: string;

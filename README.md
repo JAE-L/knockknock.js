@@ -4,6 +4,8 @@
 
 KnockKnock is the Inquiry Service that clients can easily contact about their own concerns. You can import this library regardless of frontend frameworks or libraries.
 
+👉[More Detailed Document](https://knockknock.support/document/)
+
 Copyright 2023. KnockKnock. All rights reserved.
 
 
@@ -18,10 +20,11 @@ npm i knockknock.js
 ```javascript
 import KnockKnock from 'knockknock.js';
 const knockknockInquiryComponent = new KnockKnock({
-    knockknockAPIKey: 'KnockKnock API Key',
+    knockknockAPITicket: 'KnockKnock API Ticket',
     serviceLanguage: 'KR', // KR or ENG [pick 1]
     serviceTitle: 'Service Name',
     serviceSubTitle: 'Service Explanation OR Contact Explanation',
+    useBoxShadow: true, // If the value is true, the component would have a boxShadow.
     inquiryCategoryList: [
         {   
             title: "Inquiry Category Title",
@@ -37,7 +40,8 @@ const knockknockInquiryComponent = new KnockKnock({
     ]
 });
 
-knockknockInquiryComponent.onOpen(); // Open knockknockInquiryComponent
+knockknockInquiryComponent.onOpen(); // Open knockknockInquiryComponent on fullscreen
+knockknockInquiryComponent.onOpen('.class OR #id'); // Open knockknockInquiryComponent inside of the specific parentNode you set.
 knockknockInquiryComponent.onClose(); // Close knockknockInquiryComponent
 ```
 

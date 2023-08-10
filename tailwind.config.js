@@ -68,6 +68,16 @@ module.exports = {
             transform: "translateY(0)"
           }
         },
+        "zoomIn": {
+          "0%": {
+            opacity: "0.6",
+            transform: "scale3d(0.4, 0.4, 0.4);"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale3d(1, 1, 1);"
+          }
+        },
         "blurOpacity": {
           "0%": {
             backgroundColor: "transparent",
@@ -77,33 +87,27 @@ module.exports = {
             backgroundColor: "rgba(100, 116, 139, 0.15);",
             backdropFilter: "blur(8px);"
           }
-        },
-        "knocking": {
-          "0%": {
-            transform: "translate3d(0, 0, 1000px) rotateX(6deg) rotateY(0deg) rotateZ(-2deg)"
-          },
-          "30%": {
-            transform: "translate3d(0, -2px, 1000px) rotateX(28deg) rotateY(12deg) rotateZ(-10deg)"
-          },
-          "50%": {
-            transform: "translate3d(0, -1px, 1000px) rotateX(14deg) rotateY(6deg) rotateZ(-4deg)"
-          },
-          "70%": {
-            transform: "translate3d(0, -2px, 1000px) rotateX(28deg) rotateY(12deg) rotateZ(-10deg)"
-          },
-          "100%": {
-            transform: "translate3d(0, 0, 1000px) rotateX(6deg) rotateY(0deg) rotateZ(-2deg)"
-          }
         }
       },
       animation: {
         "fadeInTop": "fadeInTop 0.3s ease-out forwards",
         "fadeInDown": "fadeInDown 0.3s ease-out forwards",
-        "blurOpacity": "blurOpacity 0.4s ease-out forwards",
-        "knocking": "knocking 0.8s ease-in-out infinite"
+        "zoomIn": "zoomIn 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards",
+        "blurOpacity": "blurOpacity 0.4s ease-out forwards"
+      },
+      boxShadow: {
+        "knockShadow": [
+          "0px 0px 12px 4px rgba(226, 232, 240, 0.4)"
+        ]
+      },
+      dropShadow: {
+        "knockingShadow": [
+          "1px 1px 1px rgba(203, 213, 225, 0.3)"
+        ]
       },
       zIndex: {
-        '9999': '9999',
+        '9998': '9998',
+        '9999': '9999'
       }
     },
     spacing: {
@@ -120,12 +124,14 @@ module.exports = {
       "11": "44px",
       "12": "48px",
       "14": "56px",
-      "16": "64px"
+      "16": "64px",
+      "18": "72px"
     },
     borderRadius: {
       "none": "0px",
       DEFAULT: "4px",
       "lg": "8px",
+      "xl": "12px",
       "2xl": "16px",
       "3xl": "18px",
       "full": "9999px",

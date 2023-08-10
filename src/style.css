@@ -60,37 +60,46 @@
 }
 
 
-.knockModalInput:focus, .knockModalInput:active{
+.knockInput:focus, .knockInput:active{
     outline: none;
 }
-.knockModalTextarea {
+.knockTextarea {
     resize: none;
 }
-.knockModalTextarea::-webkit-scrollbar {
+.knockTextarea::-webkit-scrollbar {
     display: none;
 }
-.knockModalTextarea:focus, .knockModalTextarea:active {
+.knockTextarea:focus, .knockTextarea:active {
     outline: none;
+}
+.knockInput:-webkit-autofill, .knockInput:-webkit-autofill:hover, .knockInput:-webkit-autofill:focus, .knockInput:-webkit-autofill:active {
+    transition: background-color 5000s !important;
+    -webkit-text-fill-color: #121212 !important;
 }
 
 
-.knockModalCursorPointer {
+.knockCursorPointer {
     cursor: none;
 }
 @media(pointer: fine){
-    .knockModalCursorPointer {
+    .knockCursorPointer {
         cursor: pointer;
     }
 }
 
 
-.knockModalWordWrap {
+.knockWordWrap {
     word-wrap: break-word;
     word-break: keep-all;
     white-space: pre-wrap;
 }
+.KnockWordBreakWrap {
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    white-space: pre-wrap !important;
+}
 
 
-.knockModalBackFaceVisible {
+.knockBackFaceVisible {
     backface-visibility: visible;
 }

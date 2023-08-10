@@ -10,10 +10,11 @@ interface knockInquiryCategoryDataType {
     needToRespondInquiry: boolean;
 }
 interface knockModalDataType {
-    knockknockAPIKey: string;
+    knockknockAPITicket: string;
     serviceLanguage: string;
     serviceTitle: string;
     serviceSubTitle: string;
+    useBoxShadow: boolean;
     inquiryCategoryList: knockInquiryCategoryDataType[];
 }
 export default class KnockKnock {

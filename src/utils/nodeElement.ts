@@ -1,10 +1,20 @@
 import { svgStylesType, knockButtonDataType } from './types';
 
 
-export const appendElements = function(parentNode: HTMLElement|SVGElement, childNodes: (HTMLElement|SVGElement)[]): void{
+export const appendElements = function(parentNode: Element|HTMLElement|SVGElement, childNodes: (HTMLElement|SVGElement)[]): void{
     childNodes.forEach((childNode) => {
         parentNode.appendChild(childNode);
     });
+};
+
+
+export const addClassList = function(nodeElement: Element|HTMLElement|SVGElement, classList: string[]): void{
+    nodeElement.classList.add(...classList);
+};
+
+
+export const removeClassList = function(nodeElement: Element|HTMLElement|SVGElement, classList: string[]): void{
+    nodeElement.classList.remove(...classList);
 };
 
 
@@ -15,7 +25,7 @@ export const generateNodeElement = function(nodeType:string, classList:string[])
 };
 
 
-export const generateNodeWithTextElement = function(nodeType:string, classList:string[], text:string): HTMLElement{
+export const generateNodeElementWithText = function(nodeType:string, classList:string[], text:string): HTMLElement{
     const textElement: HTMLElement = generateNodeElement(nodeType, classList);
     textElement.textContent = text;
     return textElement;
@@ -49,21 +59,21 @@ export const generateSvgElement = function(svgClassList: null|string[], svgStyle
 export const generateInputElement = function(inputType: string, inputValue: string, placeHolder: string): HTMLElement{
     let inputElement: HTMLElement;
     let inputClassList: string[];
-    const inputDefaultClassList: string[] = ['km-w-full', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-text-sm', 'km-text-black', 'km-font-medium', 'placeholder:km-text-slate-400', 'knockModalWordWrap', 'focus:km-border-slate-400', 'km-transition-[border-color]'];
+    const inputDefaultClassList: string[] = ['km-w-full', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-rounded-2xl', 'km-text-sm', 'km-text-black', 'km-font-medium', 'placeholder:km-text-slate-400', 'knockWordWrap', 'focus:km-border-slate-400', 'km-transition-[border-color]'];
 
     if(inputType === 'short'){
-        inputClassList = ['knockModalInput', 'km-h-14', 'km-px-4'];
+        inputClassList = ['knockInput', 'km-h-14', 'km-px-4'];
         inputElement = generateNodeElement('input', [...inputClassList, ...inputDefaultClassList]);
         inputElement.setAttribute('type', `text`);
         inputElement.setAttribute('value', `${inputValue}`);
     } else if(inputType === 'email'){
-        inputClassList = ['knockModalInput','km-h-14', 'km-px-4'];
+        inputClassList = ['knockInput','km-h-14', 'km-px-4'];
         inputElement = generateNodeElement('input', [...inputClassList, ...inputDefaultClassList]);
         inputElement.setAttribute('type', `email`);
         inputElement.setAttribute('autocomplete', 'off');
         inputElement.setAttribute('value', `${inputValue}`);
     } else{
-        inputClassList = ['knockModalTextarea', 'km-h-120px', 'km-p-4', 'km-resize-none'];
+        inputClassList = ['knockTextarea', 'km-h-120px', 'km-p-4', 'km-resize-none'];
         inputElement = generateNodeElement('textarea', [...inputClassList, ...inputDefaultClassList]);
         inputElement.textContent = inputValue;
     };
@@ -76,7 +86,7 @@ export const generateInputElement = function(inputType: string, inputValue: stri
 export const generateButtonElement = function(buttonData: knockButtonDataType): HTMLElement{
     let buttonElement: HTMLElement;
     let buttonClassList: string[];
-    const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-12', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockModalCursorPointer', 'km-transition-colors'];
+    const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-12', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockCursorPointer', 'km-transition-colors'];
 
     if(buttonData.buttonColor === 'blue' && !buttonData.buttonClickAble){
         buttonClassList = ['km-dc-blue', 'km-bg-slate-50', 'km-text-slate-300'];
@@ -90,7 +100,7 @@ export const generateButtonElement = function(buttonData: knockButtonDataType): 
         buttonClassList = ['km-dc-white', 'km-bg-white', 'km-border', 'km-border-solid', 'km-border-slate-200', 'km-text-slate-400', '[@media(pointer:fine){&:hover}]:km-border-slate-300', '[@media(pointer:fine){&:hover}]:km-bg-slate-50', 'active:km-border-slate-300', 'active:km-bg-slate-50'];
     };
 
-    buttonElement = generateNodeWithTextElement('button', [...buttonClassList, ...buttonDefaultClassList], `${buttonData.buttonText}`);
+    buttonElement = generateNodeElementWithText('button', [...buttonClassList, ...buttonDefaultClassList], `${buttonData.buttonText}`);
 
     buttonElement.addEventListener('click', () => {
         buttonData.buttonClickEvent();

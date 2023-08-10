@@ -1,5 +1,5 @@
-import { generateNodeElement, generateNodeWithTextElement, appendElements } from '../utils/nodeElement';
-import generateKnockIconButtonElement from './knockIconButton';
+import { generateNodeElement, generateNodeElementWithText, appendElements } from '../utils/nodeElement';
+import { generateCircleIconButton } from './knockIconButton';
 
 
 interface knockHeaderType {
@@ -25,9 +25,9 @@ export default class KnockHeader {
 
     generateKnockHeader(): HTMLElement[]{
         const titleBoxElement: HTMLElement = generateNodeElement('div', ['km-inline-flex', 'km-flex-col', 'km-gap-1']);
-        const titleElement: HTMLElement = generateNodeWithTextElement('h1', ['km-text-base', 'km-text-black', 'km-font-black', 'knockModalWordWrap'], `${this.headerTitle}`);
-        const subTitleElement: HTMLElement = generateNodeWithTextElement('p', ['km-text-xs', 'km-text-slate-400', 'km-font-medium', 'knockModalWordWrap'], `${this.headerSubTitle}`);
-        const iconButtonElement: HTMLElement = generateKnockIconButtonElement(`${this.headerIconName}`, this.headerIconClickEvent);
+        const titleElement: HTMLElement = generateNodeElementWithText('h1', ['km-text-base', 'km-text-black', 'km-font-black', 'knockWordWrap'], `${this.headerTitle}`);
+        const subTitleElement: HTMLElement = generateNodeElementWithText('p', ['km-text-xs', 'km-text-slate-400', 'km-font-medium', 'knockWordWrap'], `${this.headerSubTitle}`);
+        const iconButtonElement: HTMLElement = generateCircleIconButton(`${this.headerIconName}`, this.headerIconClickEvent);
         appendElements(titleBoxElement, [titleElement, subTitleElement]);
         return [titleBoxElement, iconButtonElement];
     };

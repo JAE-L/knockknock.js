@@ -1,18 +1,24 @@
 import './style.css';
+import fistPng from './fist.png';
 import langBundle from './utils/langBundle';
 import handleFetchAPI from './utils/api';
 import { knockInquiryServiceDataType, knockInquiryCategoryDataType } from './utils/types';
-import { generateNodeElement, generateNodeWithTextElement, appendElements } from './utils/nodeElement';
-import fistPng from './fist.png';
+import { addClassList, generateNodeElement, generateNodeElementWithText, appendElements } from './utils/nodeElement';
+import { checkTicketValidation, checkElementExist, handleNodeElement, controlHeightTransition } from './utils/handleKnockInstance';
 import KnockHeader from './components/knockHeader';
 import KnockButton from './components/knockButton';
 import KnockCategoryButton from './components/knockCategoryButton';
 import KnockInputWithButton from './components/knockInputWithButton';
 
 
-interface knockModalDataType {
-    knockknockAPIKey: string;
+
+interface knockComponentDataType {
+    knockknockAPITicket: string;
     serviceLanguage: string;
+    useBoxShadow: boolean;
+};
+
+interface knockInquiryComponentDataType extends knockComponentDataType {
     serviceTitle: string;
     serviceSubTitle: string;
     inquiryCategoryList: knockInquiryCategoryDataType[];
@@ -21,31 +27,33 @@ interface knockModalDataType {
 
 export default class KnockKnock {
     #bodyElement: HTMLElement;
-    #knockModalFragment: HTMLElement;
-    #knockModalElement: HTMLElement;
-    #knockModalHeaderSection: HTMLElement;
-    #knockModalBodySection: HTMLElement;
-    #knockModalFooterSection: HTMLElement;
-    #knockModalElementCurrentHeight: number;
-    #knockknockAPIKey: string;
+    #knockFragment: HTMLElement;
+    #knockComponent: HTMLElement;
+    #knockHeaderSection: HTMLElement;
+    #knockBodySection: HTMLElement;
+    #knockFooterSection: HTMLElement;
+    #knockComponentCurrentHeight: number;
+    #subscribeWindowResizeEvent: EventListenerOrEventListenerObject;
+    #knockknockAPITicket: string;
     #serviceLanguage: string;
     #serviceTitle: string;
     #serviceSubTitle: string;
     #inquiryCategoryList: knockInquiryCategoryDataType[];
     #inquiryServiceData: knockInquiryServiceDataType;
 
-    constructor(props: knockModalDataType){
+    constructor(props: knockInquiryComponentDataType){
         this.#bodyElement = document.body;
-        this.#knockModalFragment = generateNodeElement('section', ['knockModalFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-9999', 'km-animate-blurOpacity']);
-        this.#knockModalElement = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-animate-fadeInTop', 'km-overflow-hidden']);
-        this.#knockModalHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2']);
-        this.#knockModalBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
-        this.#knockModalFooterSection = generateNodeWithTextElement('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-text-center', 'km-select-none', 'knockModalCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
-        this.#knockModalElementCurrentHeight = 0;
-        this.#knockknockAPIKey = `${props.knockknockAPIKey ?? 'undefined'}`;
+        this.#knockFragment = generateNodeElement('section', ['knockInquiryFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-9999']);
+        this.#knockComponent = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-animate-fadeInTop', 'km-overflow-hidden', `${!!props.useBoxShadow && 'km-shadow-knockShadow'}`]);
+        this.#knockHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2']);
+        this.#knockBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
+        this.#knockFooterSection = generateNodeElementWithText('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-text-center', 'km-select-none', 'knockCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
+        this.#knockComponentCurrentHeight = 0;
+        this.#subscribeWindowResizeEvent = () => {};
+        this.#knockknockAPITicket = `${props.knockknockAPITicket ?? 'null'}`;
         this.#serviceLanguage = props.serviceLanguage === 'KR' ? 'KR' : 'ENG';
-        this.#serviceTitle = `${props.serviceTitle ?? 'undefined'}`;
-        this.#serviceSubTitle = `${props.serviceSubTitle ?? 'undefined'}`;
+        this.#serviceTitle = `${props.serviceTitle ?? 'Service Title'}`;
+        this.#serviceSubTitle = `${props.serviceSubTitle ?? 'Service SubTitle'}`;
         this.#inquiryCategoryList = Array.isArray(props.inquiryCategoryList) ? props.inquiryCategoryList : [];
         this.#inquiryServiceData = {
             inquiryCategoryTitle: '',
@@ -59,59 +67,6 @@ export default class KnockKnock {
         };
     };
 
-    #checkKnockModalDataValidation(): boolean{
-        if(this.#knockknockAPIKey.trim() === '' || this.#knockknockAPIKey.trim() === 'null' || this.#knockknockAPIKey.trim() === 'undefined'){
-            console.error('[ERROR in knockknock.js] - Please enter your API Key.');
-            return false;
-        } else{
-            return true;
-        };
-    };
-    #checkKnockModalExist(): boolean{
-        const knockModalFragment: null|HTMLElement = document.querySelector('.knockModalFragment');
-        if(knockModalFragment === null){
-            return false;
-        } else{
-            return true;
-        };
-    };
-    #checkNodeHasChild(parentNode: HTMLElement): boolean{
-        const doesNodeHasChild: boolean = parentNode.hasChildNodes();
-        return doesNodeHasChild;
-    };
-    #knockModalNodeHandler(parentNode: HTMLElement, childNodes: HTMLElement[]): void{
-        const doesNodeHasChild = this.#checkNodeHasChild(parentNode);
-        if(doesNodeHasChild){
-            parentNode.replaceChildren(...childNodes);
-        } else{
-            appendElements(parentNode, childNodes);
-        };
-    };
-    #controlHeightTransition(){
-        const space = Array.from(this.#knockModalElement.children).map(el => el.clientHeight).reduce((a, b) => a + b, 64);
-        if(this.#knockModalElementCurrentHeight < space){
-            this.#knockModalHeaderSection.classList.add('km-animate-fadeInTop');
-            setTimeout(() => {
-                this.#knockModalHeaderSection.classList.remove('km-animate-fadeInTop')
-            }, 280);
-        } else if(this.#knockModalElementCurrentHeight > space){
-            this.#knockModalHeaderSection.classList.add('km-animate-fadeInDown');
-            setTimeout(() => {
-                this.#knockModalHeaderSection.classList.remove('km-animate-fadeInDown')
-            }, 280);
-        };
-        this.#knockModalElementCurrentHeight = space;
-        this.#knockModalElement.style.height = space + "px";
-    };
-
-
-    get #_inquiryServiceData(){
-        return this.#inquiryServiceData;
-    };
-    set #_inquiryServiceData(newInquiryServiceData: knockInquiryServiceDataType){
-        this.#inquiryServiceData = newInquiryServiceData;
-    };
-
 
     #requestNewInquiry(){
         handleFetchAPI(
@@ -119,11 +74,11 @@ export default class KnockKnock {
             'POST',
             {'Content-Type': 'application/json', 'Authorization': 'null'},
             {
-                apiKey: this.#knockknockAPIKey,
-                email: this.#_inquiryServiceData.userEmailAddress.trim() === '' ? null : this.#_inquiryServiceData.userEmailAddress.trim(),
+                apiTicket: this.#knockknockAPITicket,
+                email: this.#inquiryServiceData.userEmailAddress.trim() === '' ? null : this.#inquiryServiceData.userEmailAddress.trim(),
                 serviceName: this.#serviceTitle,
-                inquiryCategory: this.#_inquiryServiceData.inquiryCategoryTitle,
-                inquiryMsg: this.#_inquiryServiceData.inquiryInputValue
+                inquiryCategory: this.#inquiryServiceData.inquiryCategoryTitle,
+                inquiryMsg: this.#inquiryServiceData.inquiryInputValue
             },
             () => {
                 this.#renderRequestSuccessPage();
@@ -145,24 +100,24 @@ export default class KnockKnock {
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockCategoryButton = new KnockCategoryButton({
             categoryList: this.#inquiryCategoryList.map((category) => {
                 return {
-                    categoryTitle: `${category.title ?? 'undefined'}`,
-                    categorySymbolTextEmoji: `${category.textEmoji ?? 'undefined'}`,
-                    categorySymbolColorName: `${category.colorName ?? 'blueLight'}`,
+                    categoryTitle: `${category?.title ?? 'undefined'}`,
+                    categorySymbolTextEmoji: `${category?.textEmoji ?? 'undefined'}`,
+                    categorySymbolColorName: `${category?.colorName ?? 'blueLight'}`,
                     categoryClickEvent: () => {
-                        this.#_inquiryServiceData = {
-                            inquiryCategoryTitle: `${category.title ?? 'undefined'}`,
-                            inquiryCategorySubTitle: `${category.subTitle ?? 'undefined'}`,
-                            inquiryInputType: `${category.inputType ?? 'short'}`,
-                            inquiryInputValue: `${category.inputDefaultValue ?? 'undefined'}`,
-                            inquiryInputPlaceHolder: `${category.placeHolder ?? 'undefined'}`,
-                            inquiryInputButtonText: `${category.buttonText ?? 'undefined'}`,
-                            inquiryNeedEmailAddress: !!category.needToRespondInquiry,
-                            userEmailAddress: `${this.#_inquiryServiceData.userEmailAddress}`
+                        this.#inquiryServiceData = {
+                            inquiryCategoryTitle: `${category?.title ?? 'undefined'}`,
+                            inquiryCategorySubTitle: `${category?.subTitle ?? 'undefined'}`,
+                            inquiryInputType: `${category?.inputType ?? 'short'}`,
+                            inquiryInputValue: `${category?.inputDefaultValue ?? 'undefined'}`,
+                            inquiryInputPlaceHolder: `${category?.placeHolder ?? 'undefined'}`,
+                            inquiryInputButtonText: `${category?.buttonText ?? 'undefined'}`,
+                            inquiryNeedEmailAddress: !!category?.needToRespondInquiry,
+                            userEmailAddress: `${this.#inquiryServiceData.userEmailAddress}`
                         };
                         this.#renderInquiryInputPage();
                     }
@@ -170,32 +125,29 @@ export default class KnockKnock {
             })
         });
         const newKnockCategoryButtonGroup: HTMLElement[] = newKnockCategoryButton.generateKnockCategoryButtonGroup();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockCategoryButtonGroup);
+        handleNodeElement(this.#knockBodySection, newKnockCategoryButtonGroup);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderInquiryInputPage(){
         const newKnockHeader = new KnockHeader({
-            headerTitle: `${this.#_inquiryServiceData.inquiryCategoryTitle}`,
-            headerSubTitle: `${this.#_inquiryServiceData.inquiryCategorySubTitle}`,
+            headerTitle: `${this.#inquiryServiceData.inquiryCategoryTitle}`,
+            headerSubTitle: `${this.#inquiryServiceData.inquiryCategorySubTitle}`,
             headerIconName: 'leftArrowIcon',
             headerIconClickEvent: () => {
                 this.#renderInquiryCategoryPage();
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockInputWithButton = new KnockInputWithButton({
             inputData: 'inquiryInputValue',
-            inputType: `${this.#_inquiryServiceData.inquiryInputType}`,
-            inputValue: `${this.#_inquiryServiceData.inquiryInputValue}`,
-            placeHolder: `${this.#_inquiryServiceData.inquiryInputPlaceHolder}`,
+            inputType: `${this.#inquiryServiceData.inquiryInputType}`,
+            inputValue: `${this.#inquiryServiceData.inquiryInputValue}`,
+            placeHolder: `${this.#inquiryServiceData.inquiryInputPlaceHolder}`,
             inputChangeEvent: (newInquiryInputValue: string) => {
-                this.#_inquiryServiceData = {
-                    ...this.#_inquiryServiceData,
-                    inquiryInputValue: newInquiryInputValue
-                }
+                this.#inquiryServiceData.inquiryInputValue = newInquiryInputValue;
             },
             inputKeyEvent: () => {
                 this.#renderEmailInputPage();
@@ -203,20 +155,20 @@ export default class KnockKnock {
             inputValidationRegExp: '([^\\s])',
             buttonList: [
                 {
-                    buttonText: `${this.#_inquiryServiceData.inquiryInputButtonText}`,
+                    buttonText: `${this.#inquiryServiceData.inquiryInputButtonText}`,
                     buttonColor: 'blue',
                     buttonClickEvent: () => {
                         this.#renderEmailInputPage();
                     },
                     buttonClickAble: false,
-                    connectedInputData: 'inquiryInputValue'
+                    connectedData: 'inquiryInputValue'
                 }
             ]
         });
         const newKnockInputWithButtonElement: HTMLElement[] = newKnockInputWithButton.generateInputWithButton();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockInputWithButtonElement);
+        handleNodeElement(this.#knockBodySection, newKnockInputWithButtonElement);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderEmailInputPage(){
         const emailInputPageLangBundle = langBundle[this.#serviceLanguage]['emailInputPage'];
@@ -230,24 +182,21 @@ export default class KnockKnock {
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockInputWithButton = new KnockInputWithButton({
             inputData: 'userEmailAddress',
             inputType: 'email',
-            inputValue: `${this.#_inquiryServiceData.userEmailAddress}`,
+            inputValue: `${this.#inquiryServiceData.userEmailAddress}`,
             placeHolder: `${emailInputPageLangBundle.placeHolder}`,
             inputChangeEvent: (newUserEmailAddress: string) => {
-                this.#_inquiryServiceData = {
-                    ...this.#_inquiryServiceData,
-                    userEmailAddress: newUserEmailAddress
-                }
+                this.#inquiryServiceData.userEmailAddress = newUserEmailAddress;
             },
             inputKeyEvent: () => {
                 this.#renderEmailPreviewPage();
             },
             inputValidationRegExp: '^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$',
-            buttonList: this.#_inquiryServiceData.inquiryNeedEmailAddress ? [
+            buttonList: this.#inquiryServiceData.inquiryNeedEmailAddress ? [
                 {
                     buttonText: `${emailInputPageLangBundle.firstButtonText}`,
                     buttonColor: 'blue',
@@ -255,7 +204,7 @@ export default class KnockKnock {
                         this.#renderEmailPreviewPage();
                     },
                     buttonClickAble: false,
-                    connectedInputData: 'userEmailAddress'
+                    connectedData: 'userEmailAddress'
                 }
                 ] : [
                 {
@@ -265,27 +214,24 @@ export default class KnockKnock {
                         this.#renderEmailPreviewPage();
                     },
                     buttonClickAble: false,
-                    connectedInputData: 'userEmailAddress'
+                    connectedData: 'userEmailAddress'
                 },
                 {
                     buttonText: `${emailInputPageLangBundle.secondButtonText}`,
                     buttonColor: 'transparent',
                     buttonClickEvent: () => {
-                        this.#_inquiryServiceData = {
-                            ...this.#_inquiryServiceData,
-                            userEmailAddress: ''
-                        };
+                        this.#inquiryServiceData.userEmailAddress = '';
                         this.#renderRequestNewInquiryPage();
                     },
                     buttonClickAble: true,
-                    connectedInputData: null
+                    connectedData: null
                 }
             ]
         });
         const newKnockInputWithButtonElement: HTMLElement[] = newKnockInputWithButton.generateInputWithButton();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockInputWithButtonElement);
+        handleNodeElement(this.#knockBodySection, newKnockInputWithButtonElement);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderEmailPreviewPage(){
         const emailPreviewPageLangBundle = langBundle[this.#serviceLanguage]['emailPreviewPage'];
@@ -299,11 +245,11 @@ export default class KnockKnock {
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockCategoryButton = new KnockCategoryButton({
             categoryList: [{
-                categoryTitle: `${this.#_inquiryServiceData.userEmailAddress}`,
+                categoryTitle: `${this.#inquiryServiceData.userEmailAddress}`,
                 categorySymbolTextEmoji: `📩`,
                 categorySymbolColorName: 'blueLight',
                 categoryClickEvent: () => {
@@ -319,14 +265,14 @@ export default class KnockKnock {
                         this.#renderRequestNewInquiryPage();
                     },
                     buttonClickAble: true,
-                    connectedInputData: null
+                    connectedData: null
             }]
         });
         const newKnockCategoryButtonGroup: HTMLElement[] = newKnockCategoryButton.generateKnockCategoryButtonGroup();
         const newKnockButtonGroup: HTMLElement[] = newKnockButton.generateButtonGroup();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, [...newKnockCategoryButtonGroup, ...newKnockButtonGroup]);
+        handleNodeElement(this.#knockBodySection, [...newKnockCategoryButtonGroup, ...newKnockButtonGroup]);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderRequestNewInquiryPage(){
         const sendInquiryPageLangBundle = langBundle[this.#serviceLanguage]['requestNewInquiryPage'];
@@ -338,17 +284,16 @@ export default class KnockKnock {
             headerIconClickEvent: () => {},
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
-
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockHand: HTMLElement = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none']);
-        const newKnockHandPngElement: HTMLElement = generateNodeElement('img', ['km-w-16', 'km-h-16', 'km-drop-shadow-xl', 'km-animate-knocking', 'knockModalBackFaceVisible']);
+        const newKnockHandPngElement: HTMLElement = generateNodeElement('img', ['km-w-18', 'km-h-18', 'km-drop-shadow-knockingShadow', 'knockBackFaceVisible']);
         newKnockHandPngElement.setAttribute('src', fistPng);
         appendElements(newKnockHand, [newKnockHandPngElement]);
-        this.#knockModalNodeHandler(this.#knockModalBodySection, [newKnockHand]);
+        handleNodeElement(this.#knockBodySection, [newKnockHand]);
 
-        this.#controlHeightTransition();
         this.#requestNewInquiry();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderRequestSuccessPage(){
         const endInquiryPageLangBundle = langBundle[this.#serviceLanguage]['requestSuccessInquiryPage'];
@@ -362,7 +307,7 @@ export default class KnockKnock {
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockButton = new KnockButton({
             buttonList: [{
@@ -372,13 +317,13 @@ export default class KnockKnock {
                         this.onClose();
                     },
                     buttonClickAble: true,
-                    connectedInputData: null
+                    connectedData: null
             }]
         });
         const newKnockButtonGroup = newKnockButton.generateButtonGroup();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockButtonGroup);
+        handleNodeElement(this.#knockBodySection, newKnockButtonGroup);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
     #renderRequestErrorPage(errorStatus: number){
         const endInquiryPageLangBundle = langBundle[this.#serviceLanguage]['requestErrorInquiryPage'];
@@ -392,41 +337,56 @@ export default class KnockKnock {
             }
         });
         const newKnockHeaderElement: HTMLElement[] = newKnockHeader.generateKnockHeader();
-        this.#knockModalNodeHandler(this.#knockModalHeaderSection, newKnockHeaderElement);
+        handleNodeElement(this.#knockHeaderSection, newKnockHeaderElement);
 
         const newKnockButton = new KnockButton({
             buttonList: [{
                 buttonText: `${endInquiryPageLangBundle.firstButtonText}`,
                 buttonColor: 'red',
                 buttonClickEvent: () => {
-                    this.onClose();
+                    this.#renderInquiryCategoryPage();
                 },
                 buttonClickAble: true,
-                connectedInputData: null
+                connectedData: null
             }]
         });
         const newKnockButtonGroup = newKnockButton.generateButtonGroup();
-        this.#knockModalNodeHandler(this.#knockModalBodySection, newKnockButtonGroup);
+        handleNodeElement(this.#knockBodySection, newKnockButtonGroup);
 
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
     };
 
 
-    onOpen(){
-        const isKnockModalExist = this.#checkKnockModalExist();
-        const knockModalDataValidation = this.#checkKnockModalDataValidation();
-        if(isKnockModalExist || !knockModalDataValidation){return;};
+    onOpen(elementId?: null|undefined|string){
+        const isKnockComponentExist = checkElementExist('.knockInquiryFragment');
+        const ticketValidation = checkTicketValidation(this.#knockknockAPITicket);
+        if(isKnockComponentExist || !ticketValidation){return;};
+
+        this.#knockFooterSection.addEventListener('click', () => {window.open('https://knockknock.support')});
 
         this.#renderInquiryCategoryPage();
-        this.#knockModalFooterSection.addEventListener('click', () => {window.open('https://knockknock.support')});
+        appendElements(this.#knockComponent, [this.#knockHeaderSection, this.#knockBodySection, this.#knockFooterSection]);
 
-        appendElements(this.#knockModalElement, [this.#knockModalHeaderSection, this.#knockModalBodySection, this.#knockModalFooterSection]);
-        appendElements(this.#knockModalFragment, [this.#knockModalElement]);
-        this.#bodyElement.insertBefore(this.#knockModalFragment, this.#bodyElement.firstChild);
+        const knockInquiryComponent: null|Element|HTMLElement = elementId ? document.querySelector(`${elementId}`) : null;
+        if(knockInquiryComponent){
+            addClassList(this.#knockComponent, ['km-border', 'km-border-solid', 'km-border-slate-200']);
+            appendElements(knockInquiryComponent, [this.#knockComponent]);
+        } else{
+            addClassList(this.#knockFragment, ['km-animate-blurOpacity']);
+            appendElements(this.#knockFragment, [this.#knockComponent]);
+            document.documentElement.insertBefore(this.#knockFragment, this.#bodyElement);
+            // this.#bodyElement.insertBefore(this.#knockFragment, this.#bodyElement.firstChild);
+        };
         
-        this.#controlHeightTransition();
+        controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, true);
+        this.#subscribeWindowResizeEvent = (): void => {
+            controlHeightTransition(this.#knockComponent, this.#knockHeaderSection, this.#knockComponentCurrentHeight, (newHeight: number) => {this.#knockComponentCurrentHeight = newHeight}, false);
+        };
+        window.addEventListener('resize', this.#subscribeWindowResizeEvent);
     };
     onClose(){
-        this.#knockModalFragment?.remove();
+        this.#knockFragment?.remove();
+        this.#knockComponent?.remove();
+        window.removeEventListener('resize', this.#subscribeWindowResizeEvent);
     };
 }

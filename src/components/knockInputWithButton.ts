@@ -71,10 +71,10 @@ export default class KnockInputWithButton {
 
     private checkButtonClickAble(buttonGroup: HTMLElement[]): void{
         buttonGroup.forEach((buttonElement: HTMLElement, index: number): void => {
-            const connectedInputData: null|undefined|string = this.buttonList[index]?.connectedInputData;
-            if(connectedInputData === this.inputData && this.inputValidationState){
+            const connectedData: null|undefined|string = this.buttonList[index]?.connectedData;
+            if(connectedData === this.inputData && this.inputValidationState){
                 this.changeButtonClass(buttonElement, true);
-            } else if(connectedInputData === this.inputData && !this.inputValidationState){
+            } else if(connectedData === this.inputData && !this.inputValidationState){
                 this.changeButtonClass(buttonElement, false);
             };
         });

@@ -35,7 +35,7 @@ export default {
     'ENG': {
         'emailInputPage': {
             title: 'Enter your email',
-            subTitle: 'Please enter your email address, if you want to receive information about your inquiry and reply.',
+            subTitle: 'Please enter your email address, if you want to receive information about your inquiry and a reply.',
             placeHolder: 'Enter your email',
             firstButtonText: 'Continue',
             secondButtonText: 'Skip'
@@ -46,7 +46,7 @@ export default {
             firstButtonText: 'Continue'
         },
         'requestNewInquiryPage': {
-            title: 'Uploading',
+            title: 'Uploading...',
             subTitle: 'Please wait a second.',
         },
         'requestSuccessInquiryPage': {
@@ -56,13 +56,13 @@ export default {
         },
         'requestErrorInquiryPage': {
             title: '❗️Failed to upload',
-            '-2': 'Error occured on our server.',
-            '-3': 'Unvalid API Key. Please contact service manager.',
-            '-4': 'Error occured. Please try again.',
-            '-5': 'Error occured. Please try again.',
-            '-6': 'Error occured on our server. Please try again.',
-            '-7': 'Error occured. Please try again.',
-            firstButtonText: 'Close'
+            '400': 'Unvalid API Key. Please contact service manager.',
+            '401': 'Error occured. Please try again.',
+            '403': 'Error occured. Please try again.',
+            '500': 'Error occured on our server. Please try again.',
+            '503': 'Error occured on our server.',
+            '600': 'Error occured. Please try again.',
+            firstButtonText: 'Go Back'
         }
     }
 }
