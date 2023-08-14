@@ -20,7 +20,7 @@ interface knockModalDataType {
 export default class KnockKnock {
     #private;
     constructor(props: knockModalDataType);
-    onOpen(): void;
+    onOpen(elementSymbol?: null|undefined|string): void;
     onClose(): void;
 }
 export {};

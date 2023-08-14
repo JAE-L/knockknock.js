@@ -44,7 +44,7 @@ export default class KnockKnock {
     constructor(props: knockInquiryComponentDataType){
         this.#bodyElement = document.body;
         this.#knockFragment = generateNodeElement('section', ['knockInquiryFragment', 'km-w-full', 'km-h-full', 'km-fixed', 'km-p-4', 'km-flex', 'km-justify-center', 'km-items-end', 'km-z-9999']);
-        this.#knockComponent = generateNodeElement('div', ['km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-animate-fadeInTop', 'km-overflow-hidden', `${!!props.useBoxShadow && 'km-shadow-knockShadow'}`]);
+        this.#knockComponent = generateNodeElement('div', ['knockInquiryComponent', 'km-w-full', 'km-max-w-360px', 'km-bg-white', 'km-rounded-3xl', 'km-p-4', 'km-flex', 'km-flex-col', 'km-items-center', 'km-justify-end', 'km-gap-4', 'km-font-nanumFont', 'km-transition-[height]', 'km-duration-300', 'km-ease-out', 'km-will-change-[height]', 'km-animate-fadeInTop', 'km-overflow-hidden', `${!!props.useBoxShadow && 'km-shadow-knockShadow'}`]);
         this.#knockHeaderSection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-justify-between', 'km-items-start', 'km-gap-2']);
         this.#knockBodySection = generateNodeElement('div', ['km-w-full', 'km-h-auto', 'km-flex', 'km-flex-col', 'km-gap-2']);
         this.#knockFooterSection = generateNodeElementWithText('p', ['km-text-2xs', 'km-text-slate-300', 'km-font-semibold', 'km-text-center', 'km-select-none', 'knockCursorPointer', '[@media(pointer:fine){&:hover}]:km-text-slate-400', 'active:km-text-slate-400', 'km-transition-[color]'], 'powered by KnockKnock');
@@ -357,8 +357,8 @@ export default class KnockKnock {
     };
 
 
-    onOpen(elementId?: null|undefined|string){
-        const isKnockComponentExist = checkElementExist('.knockInquiryFragment');
+    onOpen(elementSymbol?: null|undefined|string){
+        const isKnockComponentExist = checkElementExist('.knockInquiryComponent');
         const ticketValidation = checkTicketValidation(this.#knockknockAPITicket);
         if(isKnockComponentExist || !ticketValidation){return;};
 
@@ -367,7 +367,7 @@ export default class KnockKnock {
         this.#renderInquiryCategoryPage();
         appendElements(this.#knockComponent, [this.#knockHeaderSection, this.#knockBodySection, this.#knockFooterSection]);
 
-        const knockInquiryComponent: null|Element|HTMLElement = elementId ? document.querySelector(`${elementId}`) : null;
+        const knockInquiryComponent: null|Element|HTMLElement = elementSymbol ? document.querySelector(`${elementSymbol}`) : null;
         if(knockInquiryComponent){
             addClassList(this.#knockComponent, ['km-border', 'km-border-solid', 'km-border-slate-200']);
             appendElements(knockInquiryComponent, [this.#knockComponent]);

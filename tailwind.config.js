@@ -15,6 +15,7 @@ module.exports = {
         "120px": "120px",//7.5rem
       },
       minHeight: {
+        "48px": "48px",
         "56px": "56px",
       },
       fontSize: {

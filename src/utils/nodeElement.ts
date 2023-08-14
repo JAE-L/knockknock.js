@@ -86,7 +86,7 @@ export const generateInputElement = function(inputType: string, inputValue: stri
 export const generateButtonElement = function(buttonData: knockButtonDataType): HTMLElement{
     let buttonElement: HTMLElement;
     let buttonClassList: string[];
-    const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-12', 'km-rounded-2xl', 'km-px-4', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockCursorPointer', 'km-transition-colors'];
+    const buttonDefaultClassList: string[] = ['km-w-full', 'km-h-auto', 'km-min-h-48px', 'km-rounded-2xl', 'km-px-4', 'km-py-3', 'km-text-sm', 'km-font-semibold', 'km-flex', 'km-justify-center', 'km-items-center', 'km-select-none', 'knockCursorPointer', 'km-transition-colors'];
 
     if(buttonData.buttonColor === 'blue' && !buttonData.buttonClickAble){
         buttonClassList = ['km-dc-blue', 'km-bg-slate-50', 'km-text-slate-300'];

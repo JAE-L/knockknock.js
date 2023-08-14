@@ -40,9 +40,9 @@ const knockknockInquiryComponent = new KnockKnock({
     ]
 });
 
-knockknockInquiryComponent.onOpen(); // Open knockknockInquiryComponent on fullscreen
+knockknockInquiryComponent.onOpen(); // Open knockknockInquiryComponent on fullscreen.
 knockknockInquiryComponent.onOpen('.class OR #id'); // Open knockknockInquiryComponent inside of the specific parentNode you set.
-knockknockInquiryComponent.onClose(); // Close knockknockInquiryComponent
+knockknockInquiryComponent.onClose(); // Close knockknockInquiryComponent.
 ```
 
 
