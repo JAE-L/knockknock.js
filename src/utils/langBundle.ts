@@ -23,13 +23,13 @@ export default {
         },
         'requestErrorInquiryPage': {
             title: '❗️문의 등록 실패',
-            '-2': '서버에 오류가 발생했어요.',
-            '-3': '이용할 수 없는 API Key예요. 해당 서비스 관리자에게 문의해 주세요.',
-            '-4': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
-            '-5': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
-            '-6': '서버에 오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
-            '-7': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
-            firstButtonText: '닫기'
+            '400': '이용할 수 없는 API Ticket이예요. 해당 서비스 관리자에게 문의해 주세요.',
+            '401': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
+            '403': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
+            '500': '서버에 오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
+            '503': '서버에 오류가 발생했어요.',
+            '600': '오류가 발생했어요. 잠시 후에 다시 시도해 주세요.',
+            firstButtonText: '돌아가기'
         }
     },
     'ENG': {
@@ -56,7 +56,7 @@ export default {
         },
         'requestErrorInquiryPage': {
             title: '❗️Failed to upload',
-            '400': 'Unvalid API Key. Please contact service manager.',
+            '400': 'Invalid API Ticket. Please contact service manager.',
             '401': 'Error occured. Please try again.',
             '403': 'Error occured. Please try again.',
             '500': 'Error occured on our server. Please try again.',
